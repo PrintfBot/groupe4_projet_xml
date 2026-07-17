@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Réseau Mobile - Aéroport International Léopold Sédar Senghor (DKR) - Dakar, Yoff, Sénégal -->
+<reseau_mobile zone="Aéroport International Léopold Sédar Senghor" code_IATA="DKR" ville="Dakar" pays="Sénégal" coordonnees="14.7397° N, 17.4902° W" surface_km2="5.2" date_mise_a_jour="2024-01-15">
+
+  <description>
+    Réseau mobile déployé à l'Aéroport International Léopold Sédar Senghor de Dakar-Yoff, 
+    principal hub aérien d'Afrique de l'Ouest. Le réseau couvre l'ensemble des 
+    terminaux, zones de piste, parkings et bureaux administratifs sur une superficie 
+    de 5,2 km². Technologies déployées : 2G/GSM, 3G/UMTS, 4G/LTE, 4G+ LTE-A et 5G NSA.
+    Opérateurs présents : Orange Sénégal, Free Sénégal (Expresso), Sonatel.
+    Trafic journalier moyen : 42 000 passagers, 580 vols.
+  </description>
+
+  <operateurs>
+    <operateur id="OP1" nom="Orange Sénégal" code_MNC="01" code_MCC="608" couleur="#FF6600"/>
+    <operateur id="OP2" nom="Free Sénégal (Expresso)" code_MNC="03" code_MCC="608" couleur="#CC0000"/>
+    <operateur id="OP3" nom="Sonatel" code_MNC="02" code_MCC="608" couleur="#009933"/>
+  </operateurs>
+
+  <technologies>
+    <technologie nom="2G/GSM" frequence_MHz="900/1800" debit_max_Mbps="0.114"/>
+    <technologie nom="3G/UMTS" frequence_MHz="2100" debit_max_Mbps="42"/>
+    <technologie nom="4G/LTE" frequence_MHz="800/1800/2600" debit_max_Mbps="150"/>
+    <technologie nom="4G+/LTE-A" frequence_MHz="1800+2600" debit_max_Mbps="300"/>
+    <technologie nom="5G/NSA" frequence_MHz="3500" debit_max_Mbps="1000"/>
+  </technologies>
+
+  <!-- ========== CŒUR DE RÉSEAU ========== -->
+  <couche nom="Cœur de Réseau (Core Network)">
+
+    <equipement id="EPC01" type="EPC" nom="Evolved Packet Core Principal" 
+      fabricant="Ericsson" modele="SGSN-MME 16A" 
+      localisation="Datacenter Principal - Bâtiment Technique Nord" 
+      adresse_ip="10.0.0.1" statut="actif"
+      operateur_ref="OP1"
+      latitude="14.7420" longitude="-17.4910">
+      <description>Cœur de réseau 4G/LTE principal gérant l'ensemble du trafic voix et données de la zone aéroportuaire. Redondance N+1 assurée.</description>
+      <specs>
+        <spec nom="Capacité abonnés simultanés" valeur="50 000"/>
+        <spec nom="Débit agrégé max" valeur="10 Gbps"/>
+        <spec nom="Redondance" valeur="Oui - Actif/Passif"/>
+        <spec nom="Alimentation" valeur="Groupe électrogène + UPS 4h"/>
+        <spec nom="Refroidissement" valeur="CRAC 20kW"/>
+      </specs>
+    </equipement>
+
+    <equipement id="MSC01" type="MSC" nom="Mobile Switching Center" 
+      fabricant="Huawei" modele="USN9810" 
+      localisation="Datacenter Principal - Bâtiment Technique Nord"
+      adresse_ip="10.0.0.2" statut="actif"
+      operateur_ref="OP1"
+      latitude="14.7420" longitude="-17.4910">
+      <description>Commutateur vocal 2G/3G gérant les appels téléphoniques dans la zone. Interconnecté au réseau PSTN de Sonatel.</description>
+      <specs>
+        <spec nom="Capacité appels simultanés" valeur="10 000"/>
+        <spec nom="Protocoles" valeur="SS7, SIP, ISUP"/>
+      </specs>
+    </equipement>
+
+    <equipement id="HSS01" type="HSS" nom="Home Subscriber Server" 
+      fabricant="Ericsson" modele="HSS-FE R17" 
+      localisation="Datacenter Secondaire - Bâtiment Admin"
+      adresse_ip="10.0.0.5" statut="actif"
+      operateur_ref="OP1"
+      latitude="14.7415" longitude="-17.4905">
+      <description>Base de données centrale des abonnés. Gère l'authentification, les profils et les politiques QoS de 2,4 millions d'abonnés Orange Sénégal.</description>
+    </equipement>
+
+    <equipement id="PCRF01" type="PCRF" nom="Policy and Charging Rules Function" 
+      fabricant="Nokia" modele="CG-2900" 
+      localisation="Datacenter Principal - Bâtiment Technique Nord"
+      adresse_ip="10.0.0.8" statut="actif"
+      operateur_ref="OP1"
+      latitude="14.7420" longitude="-17.4910">
+      <description>Contrôle les politiques QoS, la facturation en temps réel et la gestion de bande passante par type de trafic.</description>
+    </equipement>
+
+  </couche>
+
+  <!-- ========== RÉSEAU D'ACCÈS RADIO (RAN) ========== -->
+  <couche nom="Réseau d'Accès Radio (RAN)">
+
+    <!-- BBU Hotels / Centralized RAN -->
+    <equipement id="BBU01" type="BBU" nom="Baseband Unit Hotel - Terminal Principal" 
+      fabricant="Ericsson" modele="AIR 6449 B42/B43" 
+      localisation="Salle Technique Terminal 1 - Niveau -1"
+      adresse_ip="10.1.0.10" statut="actif"
+      operateur_ref="OP1"
+      latitude="14.7400" longitude="-17.4895">
+      <description>Unité de traitement bande de base centralisée gérant 6 secteurs radio dans le terminal principal via CPRI sur fibre optique.</description>
+      <specs>
+        <spec nom="Capacité secteurs" valeur="6"/>
+        <spec nom="Technologies supportées" valeur="2G, 3G, 4G, 4G+"/>
+        <spec nom="Interface fronthaul" valeur="CPRI 10 Gbps"/>
+        <spec nom="Consommation" valeur="1200W"/>
+      </specs>
+    </equipement>
+
+    <equipement id="BBU02" type="BBU" nom="Baseband Unit Hotel - Terminal Cargo" 
+      fabricant="Huawei" modele="BBU5900" 
+      localisation="Salle Technique Zone Cargo"
+      adresse_ip="10.1.0.11" statut="actif"
+      operateur_ref="OP2"
+      latitude="14.7430" longitude="-17.4880">
+      <description>BBU dédié à la zone cargo et logistique. Gère le trafic IoT des systèmes de tracking de fret et les communications des agents.</description>
+      <specs>
+        <spec nom="Capacité secteurs" valeur="4"/>
+        <spec nom="Technologies supportées" valeur="2G, 3G, 4G, NB-IoT"/>
+        <spec nom="Interface fronthaul" valeur="eCPRI 25 Gbps"/>
+      </specs>
+    </equipement>
+
+    <equipement id="BBU03" type="BBU" nom="Baseband Unit Hotel - Zone Piste" 
+      fabricant="Nokia" modele="AirScale ABIA" 
+      localisation="Tour de Contrôle - Local Technique"
+      adresse_ip="10.1.0.12" statut="actif"
+      operateur_ref="OP3"
+      latitude="14.7410" longitude="-17.4920">
+      <description>BBU couvrant les pistes, taxiways et zones aprons. Équipé pour les communications critiques des équipes au sol.</description>
+    </equipement>
+
+    <!-- RRU / Antennes -->
+    <equipement id="RRU01" type="RRU" nom="Antenne Macro - Toit Terminal 1" 
+      fabricant="Ericsson" modele="AIR 3239 B42" 
+      localisation="Toit Terminal 1 - Secteur Nord"
+      adresse_ip="10.1.1.1" statut="actif"
+      operateur_ref="OP1" bbu_parent="BBU01"
+      hauteur_m="22" azimut="0/120/240" tilt="6"
+      latitude="14.7398" longitude="-17.4890">
+      <description>Antenne triSectorielle 4G/4G+ couvrant les abords du terminal, zones dépose minute et parking P1. Hauteur 22m, gain 18dBi.</description>
+      <specs>
+        <spec nom="Puissance TX" valeur="2x40W par secteur"/>
+        <spec nom="Fréquences" valeur="1800 MHz / 2600 MHz"/>
+        <spec nom="MIMO" valeur="4x4"/>
+        <spec nom="Rayon de couverture" valeur="800m"/>
+      </specs>
+      <couverture>
+        <zone>Terminal 1 Hall Départ</zone>
+        <zone>Parking P1 Court Séjour</zone>
+        <zone>Zone Dépose Minute</zone>
+        <zone>Accès Autoroute VDN</zone>
+      </couverture>
+    </equipement>
+
+    <equipement id="RRU02" type="RRU" nom="Antenne Macro - Tour de Contrôle" 
+      fabricant="Nokia" modele="AEFB Dual Band" 
+      localisation="Tour de Contrôle ATC - Niveau 12"
+      adresse_ip="10.1.1.2" statut="actif"
+      operateur_ref="OP1" bbu_parent="BBU01"
+      hauteur_m="48" azimut="0/120/240" tilt="4"
+      latitude="14.7405" longitude="-17.4915">
+      <description>Antenne principale en hauteur sur tour de contrôle. Couverture grand rayon pour pistes et zones périphériques de l'aéroport.</description>
+      <specs>
+        <spec nom="Puissance TX" valeur="60W par secteur"/>
+        <spec nom="Fréquences" valeur="800 MHz / 1800 MHz"/>
+        <spec nom="MIMO" valeur="2x2"/>
+        <spec nom="Rayon de couverture" valeur="2500m"/>
+      </specs>
+      <couverture>
+        <zone>Piste 01/19 (3490m)</zone>
+        <zone>Piste 17/35 (2900m)</zone>
+        <zone>Zone Aprons 1, 2, 3</zone>
+        <zone>Taxiways A, B, C, D</zone>
+        <zone>Périphérie aéroport</zone>
+      </couverture>
+    </equipement>
+
+    <equipement id="RRU03" type="RRU_Indoor" nom="DAS Indoor - Terminal Hall Arrivées" 
+      fabricant="CommScope" modele="ION-E DAS" 
+      localisation="Hall Arrivées International - Niveau RDC"
+      adresse_ip="10.1.1.3" statut="actif"
+      operateur_ref="OP1" bbu_parent="BBU01"
+      latitude="14.7396" longitude="-17.4892">
+      <description>Système DAS (Distributed Antenna System) indoor couvrant le hall arrivées sur 4200 m². 24 antennes omnidirectionnelles disséminées dans le plafond.</description>
+      <specs>
+        <spec nom="Nombre d'antennes" valeur="24"/>
+        <spec nom="Surface couverte" valeur="4200 m²"/>
+        <spec nom="Technologies" valeur="2G/3G/4G/4G+"/>
+        <spec nom="Puissance par antenne" valeur="2W"/>
+        <spec nom="Fréquences" valeur="900/1800/2100/2600 MHz"/>
+      </specs>
+    </equipement>
+
+    <equipement id="RRU04" type="RRU_Indoor" nom="DAS Indoor - Hall Départs + Duty Free" 
+      fabricant="CommScope" modele="ION-E DAS" 
+      localisation="Hall Départs + Zone Duty Free - Niveaux 1 et 2"
+      adresse_ip="10.1.1.4" statut="actif"
+      operateur_ref="OP1" bbu_parent="BBU01"
+      latitude="14.7402" longitude="-17.4888">
+      <description>DAS indoor haute densité pour zones de forte affluence : hall départs, duty free, restaurants, salons. 36 antennes + 8 small cells 4G+.</description>
+      <specs>
+        <spec nom="Nombre d'antennes DAS" valeur="36"/>
+        <spec nom="Nombre small cells" valeur="8"/>
+        <spec nom="Surface couverte" valeur="6800 m²"/>
+        <spec nom="Technologies" valeur="3G/4G/4G+/5G NSA"/>
+        <spec nom="Capacité" valeur="3500 utilisateurs simultanés"/>
+      </specs>
+    </equipement>
+
+    <equipement id="RRU05" type="Small_Cell" nom="Small Cell 5G - Salon VIP Air Sénégal" 
+      fabricant="Ericsson" modele="Radio 4449 5G" 
+      localisation="Salon Business Class - Niveau 2, Zone B"
+      adresse_ip="10.1.1.5" statut="actif"
+      operateur_ref="OP1" bbu_parent="BBU01"
+      latitude="14.7401" longitude="-17.4887">
+      <description>Small cell 5G NSA dédiée au salon premium. Offre jusqu'à 1 Gbps aux passagers en classe affaires et première classe.</description>
+      <specs>
+        <spec nom="Technologie" valeur="5G NSA (Non-Standalone)"/>
+        <spec nom="Fréquence" valeur="3500 MHz (n78)"/>
+        <spec nom="Débit peak" valeur="1 Gbps DL / 200 Mbps UL"/>
+        <spec nom="Portée" valeur="150m"/>
+        <spec nom="Capacité" valeur="200 utilisateurs"/>
+      </specs>
+    </equipement>
+
+    <equipement id="RRU06" type="RRU" nom="Antenne Macro - Zone Cargo Est" 
+      fabricant="Huawei" modele="AAU5614" 
+      localisation="Hangar Cargo Air France - Toit Est"
+      adresse_ip="10.1.1.6" statut="actif"
+      operateur_ref="OP2" bbu_parent="BBU02"
+      hauteur_m="15" azimut="90/270" tilt="8"
+      latitude="14.7432" longitude="-17.4875">
+      <description>Antenne biSectorielle 4G/NB-IoT dédiée aux opérations cargo. Connecte les scanners ULD, systèmes RFID palettes et trackers GPS fret.</description>
+      <specs>
+        <spec nom="Puissance TX" valeur="20W par secteur"/>
+        <spec nom="Fréquences" valeur="800 MHz (NB-IoT) / 1800 MHz (4G)"/>
+        <spec nom="Débit agrégé" valeur="150 Mbps"/>
+      </specs>
+    </equipement>
+
+    <equipement id="RRU07" type="RRU" nom="Antenne - Parking Longue Durée P3" 
+      fabricant="Ericsson" modele="AIR 3268" 
+      localisation="Mât Parking P3 - Allée Centrale"
+      adresse_ip="10.1.1.7" statut="actif"
+      operateur_ref="OP3" bbu_parent="BBU03"
+      hauteur_m="12" azimut="0/180" tilt="10"
+      latitude="14.7388" longitude="-17.4900">
+      <description>Antenne couvrant le parking longue durée P3 (1200 places). Assure la couverture 2G/4G pour les passagers et le système de guidage parking.</description>
+    </equipement>
+
+  </couche>
+
+  <!-- ========== RÉSEAU DE TRANSPORT ========== -->
+  <couche nom="Réseau de Transport (Backhaul/Fronthaul)">
+
+    <equipement id="AGGR01" type="Routeur_Agregation" nom="Routeur Agrégation Principal" 
+      fabricant="Cisco" modele="ASR 9906" 
+      localisation="Datacenter Principal - Bâtiment Technique Nord"
+      adresse_ip="10.2.0.1" statut="actif"
+      latitude="14.7420" longitude="-17.4910">
+      <description>Routeur cœur gérant l'ensemble du trafic backhaul vers le réseau national. Liens MPLS vers backbone Sonatel. Redondance BGP avec 2 chemins distincts.</description>
+      <specs>
+        <spec nom="Capacité switching" valeur="160 Tbps"/>
+        <spec nom="Interfaces" valeur="8x 100GE + 24x 10GE"/>
+        <spec nom="Protocoles" valeur="BGP, OSPF, MPLS, SR"/>
+        <spec nom="Redondance" valeur="Dual power supply + Route Processor"/>
+      </specs>
+    </equipement>
+
+    <equipement id="SW01" type="Switch_Aggregation" nom="Switch Agrégation - Core" 
+      fabricant="Juniper" modele="EX9214" 
+      localisation="Datacenter Principal"
+      adresse_ip="10.2.0.5" statut="actif"
+      latitude="14.7420" longitude="-17.4910">
+      <description>Switch de cœur interconnectant tous les équipements réseau de l'aéroport. Segmentation par VLAN par technologie et par opérateur.</description>
+      <specs>
+        <spec nom="Capacité" valeur="6.4 Tbps"/>
+        <spec nom="Ports" valeur="96x 10GE SFP+ / 12x 100GE QSFP"/>
+        <spec nom="VLAN" valeur="4096 max, 120 configurés"/>
+      </specs>
+    </equipement>
+
+    <equipement id="ODF01" type="ODF" nom="Répartiteur Optique Principal" 
+      fabricant="Corning" modele="CCH-04U" 
+      localisation="Salle Brassage - Bâtiment Technique Nord"
+      adresse_ip="N/A" statut="actif"
+      latitude="14.7420" longitude="-17.4910">
+      <description>Répartiteur optique principal brassant 480 fibres monomodes SMF-28. Point de distribution vers les 7 sous-répartiteurs dans les terminaux et bâtiments annexes.</description>
+      <specs>
+        <spec nom="Capacité" valeur="480 fibres"/>
+        <spec nom="Type fibre" valeur="SMF-28 G.652D"/>
+        <spec nom="Connecteurs" valeur="LC/APC"/>
+      </specs>
+    </equipement>
+
+    <equipement id="MW01" type="Lien_Microonde" nom="Lien Microonde - Backup vers Dakar Centre" 
+      fabricant="Ericsson" modele="MINI-LINK CN 510R" 
+      localisation="Toit Bâtiment Administratif"
+      adresse_ip="10.2.1.1" statut="actif"
+      latitude="14.7415" longitude="-17.4905">
+      <description>Lien microonde 23 GHz de secours vers le point de présence Sonatel de Dakar Plateau. Activé automatiquement en cas de coupure du lien fibre principal. Capacité 1 Gbps.</description>
+      <specs>
+        <spec nom="Fréquence" valeur="23 GHz"/>
+        <spec nom="Capacité" valeur="1 Gbps"/>
+        <spec nom="Distance" valeur="18 km"/>
+        <spec nom="Disponibilité" valeur="99.995%"/>
+      </specs>
+    </equipement>
+
+  </couche>
+
+  <!-- ========== ÉQUIPEMENTS SPÉCIAUX ========== -->
+  <couche nom="Équipements Spéciaux et IoT">
+
+    <equipement id="IOT01" type="Gateway_IoT" nom="Passerelle IoT - Systèmes Aéroport" 
+      fabricant="Sierra Wireless" modele="RV55" 
+      localisation="Salle Opérations Techniques"
+      adresse_ip="10.3.0.1" statut="actif"
+      latitude="14.7408" longitude="-17.4895">
+      <description>Passerelle IoT centralisant les données des capteurs connectés : bornes d'enregistrement, affichage FIDS, compteurs passagers, capteurs environnementaux.</description>
+      <specs>
+        <spec nom="Protocoles IoT" valeur="MQTT, CoAP, LwM2M, NB-IoT, LTE-M"/>
+        <spec nom="Appareils connectés" valeur="847"/>
+        <spec nom="Débit" valeur="10 Mbps agrégé"/>
+      </specs>
+    </equipement>
+
+    <equipement id="REPEATER01" type="Répéteur" nom="Répéteur RF - Tunnels et Sous-sols" 
+      fabricant="Zinwave" modele="3000 Series" 
+      localisation="Tunnel Jonction Terminaux / Parking Souterrain"
+      adresse_ip="10.1.2.1" statut="actif"
+      latitude="14.7395" longitude="-17.4893">
+      <description>Répéteurs large bande couvrant les zones sans couverture directe : couloirs souterrains, parkings couverts, salles de bagages. 12 têtes déportées.</description>
+    </equipement>
+
+  </couche>
+
+  <!-- ========== LIENS ENTRE ÉQUIPEMENTS ========== -->
+  <liens>
+    <!-- Fronthaul BBU-RRU -->
+    <lien id="L01" type="Fibre_CPRI" de="BBU01" vers="RRU01" debit_Gbps="10" distance_m="180" statut="actif"/>
+    <lien id="L02" type="Fibre_CPRI" de="BBU01" vers="RRU02" debit_Gbps="10" distance_m="420" statut="actif"/>
+    <lien id="L03" type="Fibre_eCPRI" de="BBU01" vers="RRU03" debit_Gbps="25" distance_m="95" statut="actif"/>
+    <lien id="L04" type="Fibre_eCPRI" de="BBU01" vers="RRU04" debit_Gbps="25" distance_m="140" statut="actif"/>
+    <lien id="L05" type="Fibre_eCPRI" de="BBU01" vers="RRU05" debit_Gbps="25" distance_m="160" statut="actif"/>
+    <lien id="L06" type="Fibre_CPRI" de="BBU02" vers="RRU06" debit_Gbps="10" distance_m="85" statut="actif"/>
+    <lien id="L07" type="Fibre_CPRI" de="BBU03" vers="RRU07" debit_Gbps="10" distance_m="310" statut="actif"/>
+
+    <!-- Backhaul BBU vers Switch -->
+    <lien id="L08" type="Fibre_10GE" de="BBU01" vers="SW01" debit_Gbps="10" distance_m="200" statut="actif"/>
+    <lien id="L09" type="Fibre_10GE" de="BBU02" vers="SW01" debit_Gbps="10" distance_m="380" statut="actif"/>
+    <lien id="L10" type="Fibre_10GE" de="BBU03" vers="SW01" debit_Gbps="10" distance_m="290" statut="actif"/>
+
+    <!-- Core Network -->
+    <lien id="L11" type="Fibre_100GE" de="SW01" vers="AGGR01" debit_Gbps="100" distance_m="10" statut="actif"/>
+    <lien id="L12" type="Fibre_100GE" de="AGGR01" vers="EPC01" debit_Gbps="100" distance_m="15" statut="actif"/>
+    <lien id="L13" type="Fibre_10GE" de="AGGR01" vers="MSC01" debit_Gbps="10" distance_m="12" statut="actif"/>
+    <lien id="L14" type="Fibre_10GE" de="EPC01" vers="HSS01" debit_Gbps="10" distance_m="250" statut="actif"/>
+    <lien id="L15" type="Fibre_10GE" de="EPC01" vers="PCRF01" debit_Gbps="10" distance_m="8" statut="actif"/>
+
+    <!-- Backhaul national -->
+    <lien id="L16" type="Fibre_MPLS_100G" de="AGGR01" vers="BACKBONE_SONATEL" debit_Gbps="100" distance_km="18" statut="actif"/>
+    <lien id="L17" type="Microonde_23GHz" de="MW01" vers="POP_DAKAR_PLATEAU" debit_Gbps="1" distance_km="18" statut="secours"/>
+
+    <!-- IoT et spéciaux -->
+    <lien id="L18" type="Fibre_1GE" de="SW01" vers="IOT01" debit_Gbps="1" distance_m="60" statut="actif"/>
+    <lien id="L19" type="Coax_RF" de="RRU03" vers="REPEATER01" debit_Gbps="0.1" distance_m="45" statut="actif"/>
+    <lien id="L20" type="Fibre_10GE" de="ODF01" vers="SW01" debit_Gbps="10" distance_m="5" statut="actif"/>
+  </liens>
+
+  <!-- ========== ZONES DE COUVERTURE ========== -->
+  <zones_couverture>
+    <zone id="Z01" nom="Terminal 1 - Hall International" surface_m2="8500" 
+      technologie_max="4G+" signal_dbm="-75" operateurs="OP1,OP2,OP3"
+      equipements_couvrants="RRU03,RRU04"/>
+    <zone id="Z02" nom="Hall Départs + Duty Free" surface_m2="6800" 
+      technologie_max="5G" signal_dbm="-70" operateurs="OP1,OP2"
+      equipements_couvrants="RRU04,RRU05"/>
+    <zone id="Z03" nom="Salon Business / VIP" surface_m2="1200" 
+      technologie_max="5G" signal_dbm="-65" operateurs="OP1"
+      equipements_couvrants="RRU05"/>
+    <zone id="Z04" nom="Pistes et Aprons" surface_m2="2800000" 
+      technologie_max="4G" signal_dbm="-85" operateurs="OP1,OP3"
+      equipements_couvrants="RRU02"/>
+    <zone id="Z05" nom="Zone Cargo" surface_m2="45000" 
+      technologie_max="4G+NB-IoT" signal_dbm="-78" operateurs="OP2"
+      equipements_couvrants="RRU06"/>
+    <zone id="Z06" nom="Parkings P1, P2, P3" surface_m2="62000" 
+      technologie_max="4G" signal_dbm="-82" operateurs="OP1,OP3"
+      equipements_couvrants="RRU01,RRU07"/>
+    <zone id="Z07" nom="Tunnels et Sous-sols" surface_m2="3200" 
+      technologie_max="4G" signal_dbm="-90" operateurs="OP1,OP2"
+      equipements_couvrants="REPEATER01"/>
+    <zone id="Z08" nom="Tour de Contrôle et Zone ATC" surface_m2="800" 
+      technologie_max="4G" signal_dbm="-68" operateurs="OP3"
+      equipements_couvrants="RRU02"/>
+  </zones_couverture>
+
+  <!-- ========== STATISTIQUES ========== -->
+  <statistiques>
+    <stat nom="Trafic journalier moyen DL" valeur="4.2 TB"/>
+    <stat nom="Trafic journalier moyen UL" valeur="1.1 TB"/>
+    <stat nom="Utilisateurs simultanés peak" valeur="12 500"/>
+    <stat nom="Disponibilité réseau" valeur="99.97%"/>
+    <stat nom="Latence moyenne 4G" valeur="28 ms"/>
+    <stat nom="Latence moyenne 5G" valeur="8 ms"/>
+    <stat nom="Appels voix simultanés max" valeur="3 200"/>
+    <stat nom="Nombre équipements actifs" valeur="87"/>
+    <stat nom="Longueur fibre déployée" valeur="42 km"/>
+    <stat nom="Nombre antennes indoor" valeur="68"/>
+  </statistiques>
+
+</reseau_mobile>
